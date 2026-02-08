@@ -8,7 +8,11 @@ import {
   getClientIp,
 } from "@/lib/rate-limit";
 import { hashIp } from "@/lib/utils";
-import { SUSPICIOUS_VOTE_THRESHOLD } from "@/lib/constants";
+import {
+  SUSPICIOUS_VOTE_THRESHOLD,
+  VERIFICATION_MIN_VOTES,
+  VERIFICATION_LEGIT_THRESHOLD,
+} from "@/lib/constants";
 
 export async function GET(
   request: NextRequest,
@@ -135,7 +139,9 @@ export async function POST(
   const suspiciousVotes = votes.filter(
     (v) => v.voteType === "SUSPICIOUS"
   ).length;
+  const legitVotes = votes.filter((v) => v.voteType === "LEGIT").length;
 
+  // Auto-flag: 3+ votes, >50% suspicious
   if (
     totalVotes >= 3 &&
     suspiciousVotes / totalVotes > SUSPICIOUS_VOTE_THRESHOLD
@@ -143,6 +149,23 @@ export async function POST(
     await prisma.submission.update({
       where: { id },
       data: { status: "FLAGGED" },
+    });
+  }
+  // Auto-verify: 5+ votes, ≥70% legit
+  else if (
+    totalVotes >= VERIFICATION_MIN_VOTES &&
+    legitVotes / totalVotes >= VERIFICATION_LEGIT_THRESHOLD
+  ) {
+    await prisma.submission.update({
+      where: { id },
+      data: { status: "VERIFIED" },
+    });
+  }
+  // Revert to PENDING if neither threshold met
+  else {
+    await prisma.submission.update({
+      where: { id },
+      data: { status: "PENDING" },
     });
   }
 

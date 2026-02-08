@@ -14,6 +14,8 @@ export const ALLOWED_IMAGE_TYPES = [
 ];
 
 export const SUSPICIOUS_VOTE_THRESHOLD = 0.5; // 50% suspicious votes = auto-flag
+export const VERIFICATION_MIN_VOTES = 5;
+export const VERIFICATION_LEGIT_THRESHOLD = 0.7; // 70% legit votes = auto-verify
 
 export const DEFAULT_PAGE_SIZE = 20;
 export const MAX_PAGE_SIZE = 100;
