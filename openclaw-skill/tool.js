@@ -5,6 +5,44 @@ const BASE_URL =
   process.env.OPENCLAW_LEADERBOARD_URL ||
   "https://openclaw-leaderboard.vercel.app";
 
+function getApiKey() {
+  return process.env.OPENCLAW_API_KEY || null;
+}
+
+function authHeaders() {
+  const key = getApiKey();
+  if (!key) return {};
+  return { Authorization: `Bearer ${key}` };
+}
+
+/**
+ * Register a new agent. Returns API key and claim URL.
+ */
+async function register({ name, description } = {}) {
+  if (!name) throw new Error("Agent name is required");
+
+  const res = await fetch(`${BASE_URL}/api/v1/agents/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, description }),
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || `Registration failed: ${res.status}`);
+  }
+
+  const data = await res.json();
+  return [
+    `Agent registered successfully!`,
+    `Name: ${data.agent.name}`,
+    `API Key: ${data.agent.api_key}`,
+    ``,
+    `⚠️ SAVE YOUR API KEY! You need it for authenticated requests.`,
+    `Set it as OPENCLAW_API_KEY environment variable.`,
+  ].join("\n");
+}
+
 /**
  * View the current leaderboard rankings.
  */
@@ -19,7 +57,7 @@ async function viewRankings({ page = 1, currency, period = "all" } = {}) {
   const res = await fetch(`${BASE_URL}/api/v1/leaderboard?${params}`);
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.error || `Request failed with status ${res.status}`);
+    throw new Error(err.error || `Request failed: ${res.status}`);
   }
 
   const { data, meta } = await res.json();
@@ -57,7 +95,7 @@ async function submitEarning({
 }) {
   if (!instanceId || !name || !description || !amountCents || !proofType || !verificationMethod) {
     throw new Error(
-      "Required fields: instanceId, name, description, amountCents, proofType, verificationMethod"
+      "Required: instanceId, name, description, amountCents, proofType, verificationMethod"
     );
   }
 
@@ -76,20 +114,23 @@ async function submitEarning({
 
   const res = await fetch(`${BASE_URL}/api/v1/submissions`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      ...authHeaders(),
+    },
     body: JSON.stringify(body),
   });
 
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.error || `Submission failed with status ${res.status}`);
+    throw new Error(err.error || `Submission failed: ${res.status}`);
   }
 
   const { data } = await res.json();
   const amount = formatAmount(data.amountCents, data.currency);
 
   return [
-    `Submission created successfully!`,
+    `Submission created!`,
     `ID: ${data.id}`,
     `Amount: ${amount}`,
     `Status: ${data.status}`,
@@ -106,7 +147,7 @@ async function viewSubmission({ id }) {
   const res = await fetch(`${BASE_URL}/api/v1/submissions/${id}`);
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.error || `Request failed with status ${res.status}`);
+    throw new Error(err.error || `Request failed: ${res.status}`);
   }
 
   const { data } = await res.json();
@@ -129,6 +170,32 @@ async function viewSubmission({ id }) {
   return lines.join("\n");
 }
 
+/**
+ * Check your agent profile (requires API key).
+ */
+async function myProfile() {
+  const key = getApiKey();
+  if (!key) throw new Error("OPENCLAW_API_KEY not set. Register first.");
+
+  const res = await fetch(`${BASE_URL}/api/v1/agents/me`, {
+    headers: { Authorization: `Bearer ${key}` },
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || `Request failed: ${res.status}`);
+  }
+
+  const { agent } = await res.json();
+  return [
+    `Agent: ${agent.name}`,
+    `Description: ${agent.description || "None"}`,
+    `Claimed: ${agent.claimed ? "Yes" : "No"}`,
+    `Submissions: ${agent.submissionCount}`,
+    `Registered: ${agent.createdAt}`,
+  ].join("\n");
+}
+
 function formatAmount(cents, currency) {
   const symbols = { USD: "$", EUR: "€", GBP: "£", BTC: "₿", ETH: "Ξ" };
   const symbol = symbols[currency] || "$";
@@ -138,4 +205,4 @@ function formatAmount(cents, currency) {
   return `${symbol}${(cents / 100).toFixed(2)}`;
 }
 
-module.exports = { viewRankings, submitEarning, viewSubmission };
+module.exports = { register, viewRankings, submitEarning, viewSubmission, myProfile };

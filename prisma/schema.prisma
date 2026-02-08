@@ -33,10 +33,26 @@ enum VoteType {
   SUSPICIOUS
 }
 
+model Agent {
+  id          String       @id @default(cuid())
+  name        String       @unique
+  description String?
+  apiKey      String       @unique
+  claimUrl    String?
+  claimed     Boolean      @default(false)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  submissions Submission[]
+
+  @@index([apiKey])
+}
+
 model Submission {
   id                 String           @id @default(cuid())
   openclawInstanceId String
   openclawName       String
+  agentId            String?
+  agent              Agent?           @relation(fields: [agentId], references: [id])
   description        String
   amountCents        Int
   currency           Currency         @default(USD)

@@ -8,6 +8,7 @@ import {
   getClientIp,
 } from "@/lib/rate-limit";
 import { hashIp } from "@/lib/utils";
+import { authenticateAgent } from "@/lib/auth";
 
 export async function GET(request: NextRequest) {
   const ip = getClientIp(request);
@@ -83,10 +84,19 @@ export async function POST(request: NextRequest) {
 
   const ipHash = await hashIp(ip);
 
+  // Optional auth — if Bearer token provided, link to agent
+  let agentId: string | undefined;
+  const authHeader = request.headers.get("authorization");
+  if (authHeader?.startsWith("Bearer ")) {
+    const { agent } = await authenticateAgent(request);
+    if (agent) agentId = agent.id;
+  }
+
   const submission = await prisma.submission.create({
     data: {
       ...parsed.data,
       submitterIpHash: ipHash,
+      ...(agentId && { agentId }),
     },
   });
 
