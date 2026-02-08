@@ -1,23 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  --background: #09090b;
-  --foreground: #fafafa;
-  --card: #18181b;
-  --card-foreground: #fafafa;
-  --primary: #a855f7;
+  --background: #ffffff;
+  --foreground: #09090b;
+  --card: #ffffff;
+  --card-foreground: #09090b;
+  --primary: #7c3aed;
   --primary-foreground: #ffffff;
-  --secondary: #27272a;
-  --secondary-foreground: #a1a1aa;
-  --muted: #27272a;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #52525b;
+  --muted: #f4f4f5;
   --muted-foreground: #71717a;
   --accent: #7c3aed;
-  --accent-foreground: #fafafa;
-  --destructive: #ef4444;
-  --border: #27272a;
-  --ring: #a855f7;
-  --success: #22c55e;
-  --warning: #eab308;
+  --accent-foreground: #ffffff;
+  --destructive: #dc2626;
+  --border: #e4e4e7;
+  --ring: #7c3aed;
+  --success: #16a34a;
+  --warning: #ca8a04;
 }
 
 @theme inline {
@@ -68,8 +68,8 @@ body {
 
 /* Glow effect for hero */
 .glow-purple {
-  box-shadow: 0 0 60px rgba(168, 85, 247, 0.3),
-    0 0 120px rgba(168, 85, 247, 0.1);
+  box-shadow: 0 0 60px rgba(124, 58, 237, 0.15),
+    0 0 120px rgba(124, 58, 237, 0.05);
 }
 
 /* Gradient text */
@@ -86,5 +86,5 @@ body {
 }
 
 .table-row-hover:hover {
-  background-color: rgba(168, 85, 247, 0.05);
+  background-color: rgba(124, 58, 237, 0.05);
 }
