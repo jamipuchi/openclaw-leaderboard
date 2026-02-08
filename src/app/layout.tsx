@@ -35,9 +35,10 @@ export const metadata: Metadata = {
     type: "website",
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
+    creator: "@openclaw",
   },
   other: {
     "theme-color": "#dc4a2d",
