@@ -2,47 +2,53 @@ import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { NextResponse } from "next/server";
 
-function createRedis() {
-  const url = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+// Lazy initialization to avoid build-time errors when env vars aren't available
+let _readLimiter: Ratelimit | null | undefined;
+let _writeLimiter: Ratelimit | null | undefined;
+let _uploadLimiter: Ratelimit | null | undefined;
+
+function createRedis(): Redis | null {
+  const url = process.env.UPSTASH_REDIS_REST_URL?.trim();
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN?.trim();
   if (!url || !token) return null;
   return new Redis({ url, token });
 }
 
-const redis = createRedis();
+function getLimiter(
+  cached: Ratelimit | null | undefined,
+  windowSize: number,
+  prefix: string
+): Ratelimit | null {
+  if (cached !== undefined) return cached;
+  const redis = createRedis();
+  if (!redis) return null;
+  return new Ratelimit({
+    redis,
+    limiter: Ratelimit.slidingWindow(windowSize, "1 m"),
+    prefix,
+  });
+}
 
-// 60 requests per minute for read endpoints
-export const readLimiter = redis
-  ? new Ratelimit({
-      redis,
-      limiter: Ratelimit.slidingWindow(60, "1 m"),
-      prefix: "rl:read",
-    })
-  : null;
+export function getReadLimiter() {
+  if (_readLimiter === undefined) _readLimiter = getLimiter(_readLimiter, 60, "rl:read");
+  return _readLimiter;
+}
 
-// 5 requests per minute for write endpoints
-export const writeLimiter = redis
-  ? new Ratelimit({
-      redis,
-      limiter: Ratelimit.slidingWindow(5, "1 m"),
-      prefix: "rl:write",
-    })
-  : null;
+export function getWriteLimiter() {
+  if (_writeLimiter === undefined) _writeLimiter = getLimiter(_writeLimiter, 5, "rl:write");
+  return _writeLimiter;
+}
 
-// 2 requests per minute for upload endpoints
-export const uploadLimiter = redis
-  ? new Ratelimit({
-      redis,
-      limiter: Ratelimit.slidingWindow(2, "1 m"),
-      prefix: "rl:upload",
-    })
-  : null;
+export function getUploadLimiter() {
+  if (_uploadLimiter === undefined) _uploadLimiter = getLimiter(_uploadLimiter, 2, "rl:upload");
+  return _uploadLimiter;
+}
 
 export async function checkRateLimit(
   limiter: Ratelimit | null,
   identifier: string
 ): Promise<NextResponse | null> {
-  if (!limiter) return null; // No rate limiting if Redis not configured
+  if (!limiter) return null;
 
   const { success, limit, remaining, reset } = await limiter.limit(identifier);
 

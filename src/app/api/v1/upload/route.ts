@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { put } from "@vercel/blob";
-import { checkRateLimit, uploadLimiter, getClientIp } from "@/lib/rate-limit";
+import { checkRateLimit, getUploadLimiter, getClientIp } from "@/lib/rate-limit";
 import { MAX_FILE_SIZE, ALLOWED_IMAGE_TYPES } from "@/lib/constants";
 
 export async function POST(request: NextRequest) {
   const ip = getClientIp(request);
-  const rateLimitResponse = await checkRateLimit(uploadLimiter, ip);
+  const rateLimitResponse = await checkRateLimit(getUploadLimiter(), ip);
   if (rateLimitResponse) return rateLimitResponse;
 
   const formData = await request.formData();

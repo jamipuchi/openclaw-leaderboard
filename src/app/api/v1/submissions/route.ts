@@ -3,15 +3,15 @@ import { prisma } from "@/lib/prisma";
 import { submissionCreateSchema } from "@/lib/validators";
 import {
   checkRateLimit,
-  readLimiter,
-  writeLimiter,
+  getReadLimiter,
+  getWriteLimiter,
   getClientIp,
 } from "@/lib/rate-limit";
 import { hashIp } from "@/lib/utils";
 
 export async function GET(request: NextRequest) {
   const ip = getClientIp(request);
-  const rateLimitResponse = await checkRateLimit(readLimiter, ip);
+  const rateLimitResponse = await checkRateLimit(getReadLimiter(), ip);
   if (rateLimitResponse) return rateLimitResponse;
 
   const searchParams = request.nextUrl.searchParams;
@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   const ip = getClientIp(request);
-  const rateLimitResponse = await checkRateLimit(writeLimiter, ip);
+  const rateLimitResponse = await checkRateLimit(getWriteLimiter(), ip);
   if (rateLimitResponse) return rateLimitResponse;
 
   let body: unknown;

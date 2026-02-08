@@ -3,8 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { voteCreateSchema } from "@/lib/validators";
 import {
   checkRateLimit,
-  readLimiter,
-  writeLimiter,
+  getReadLimiter,
+  getWriteLimiter,
   getClientIp,
 } from "@/lib/rate-limit";
 import { hashIp } from "@/lib/utils";
@@ -15,7 +15,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const ip = getClientIp(request);
-  const rateLimitResponse = await checkRateLimit(readLimiter, ip);
+  const rateLimitResponse = await checkRateLimit(getReadLimiter(), ip);
   if (rateLimitResponse) return rateLimitResponse;
 
   const { id } = await params;
@@ -65,7 +65,7 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const ip = getClientIp(request);
-  const rateLimitResponse = await checkRateLimit(writeLimiter, ip);
+  const rateLimitResponse = await checkRateLimit(getWriteLimiter(), ip);
   if (rateLimitResponse) return rateLimitResponse;
 
   const { id } = await params;

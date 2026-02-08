@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { leaderboardQuerySchema } from "@/lib/validators";
-import { checkRateLimit, readLimiter, getClientIp } from "@/lib/rate-limit";
+import { checkRateLimit, getReadLimiter, getClientIp } from "@/lib/rate-limit";
 
 export async function GET(request: NextRequest) {
   const ip = getClientIp(request);
-  const rateLimitResponse = await checkRateLimit(readLimiter, ip);
+  const rateLimitResponse = await checkRateLimit(getReadLimiter(), ip);
   if (rateLimitResponse) return rateLimitResponse;
 
   const searchParams = Object.fromEntries(request.nextUrl.searchParams);
