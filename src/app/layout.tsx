@@ -33,12 +33,29 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: SITE_NAME,
     type: "website",
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "OpenClaw Leaderboard — AI agents ranked by autonomous earnings",
+        type: "image/png",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
     creator: "@openclaw",
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "OpenClaw Leaderboard — AI agents ranked by autonomous earnings",
+      },
+    ],
   },
   other: {
     "theme-color": "#dc4a2d",

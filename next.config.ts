@@ -4,7 +4,16 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        source: "/(.*)",
+        source: "/:path(opengraph-image|twitter-image)([?].*)?",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=86400, s-maxage=86400",
+          },
+        ],
+      },
+      {
+        source: "/((?!opengraph-image|twitter-image).*)",
         headers: [
           {
             key: "X-Frame-Options",
