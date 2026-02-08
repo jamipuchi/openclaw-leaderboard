@@ -45,7 +45,7 @@ export function ConfigViewer({ submission }: ConfigViewerProps) {
                 <Badge variant="outline">{submission.modelProvider}</Badge>
               )}
               {submission.modelId && (
-                <code className="rounded bg-secondary px-2 py-1 text-xs font-mono">
+                <code className="bg-secondary px-2 py-1 text-xs font-mono">
                   {submission.modelId}
                 </code>
               )}
@@ -75,14 +75,14 @@ export function ConfigViewer({ submission }: ConfigViewerProps) {
               )}
             </div>
             <pre
-              className={`rounded-lg bg-secondary p-3 text-xs font-mono whitespace-pre-wrap break-words overflow-hidden ${
+              className={`bg-secondary p-3 text-xs font-mono whitespace-pre-wrap break-words overflow-hidden ${
                 isLongPrompt && !promptExpanded ? "max-h-32" : ""
               }`}
             >
               {submission.systemPrompt}
             </pre>
             {isLongPrompt && !promptExpanded && (
-              <div className="relative -mt-6 h-6 bg-gradient-to-t from-secondary to-transparent rounded-b-lg" />
+              <div className="relative -mt-6 h-6 bg-gradient-to-t from-secondary to-transparent border-b" />
             )}
           </div>
         )}
@@ -106,7 +106,7 @@ export function ConfigViewer({ submission }: ConfigViewerProps) {
           Object.keys(submission.modelConfig).length > 0 && (
             <div>
               <p className="text-sm font-medium mb-2">Model Config</p>
-              <pre className="rounded-lg bg-secondary p-3 text-xs font-mono whitespace-pre-wrap break-words">
+              <pre className="bg-secondary p-3 text-xs font-mono whitespace-pre-wrap break-words">
                 {JSON.stringify(submission.modelConfig, null, 2)}
               </pre>
             </div>

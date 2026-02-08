@@ -160,9 +160,9 @@ export default function SubmissionDetailPage() {
                       {submission.suspiciousVotes} suspicious
                     </span>
                   </div>
-                  <div className="h-2 rounded-full bg-secondary overflow-hidden">
+                  <div className="h-2 bg-secondary overflow-hidden">
                     <div
-                      className="h-full bg-success rounded-full transition-all"
+                      className="h-full bg-success transition-all"
                       style={{ width: `${legitPercent}%` }}
                     />
                   </div>

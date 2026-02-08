@@ -203,7 +203,7 @@ function EndpointCard({ endpoint }: { endpoint: Endpoint }) {
           {endpoint.params && (
             <div>
               <h4 className="text-sm font-medium mb-2">Query Parameters</h4>
-              <div className="rounded-lg border border-border overflow-hidden">
+              <div className="border border-border overflow-hidden">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="bg-secondary/50">
@@ -238,7 +238,7 @@ function EndpointCard({ endpoint }: { endpoint: Endpoint }) {
           {endpoint.body && (
             <div>
               <h4 className="text-sm font-medium mb-2">Request Body</h4>
-              <pre className="rounded-lg bg-secondary p-4 text-xs font-mono overflow-x-auto">
+              <pre className="bg-secondary p-4 text-xs font-mono overflow-x-auto">
                 {endpoint.body}
               </pre>
             </div>
@@ -247,7 +247,7 @@ function EndpointCard({ endpoint }: { endpoint: Endpoint }) {
           {/* Example response */}
           <div>
             <h4 className="text-sm font-medium mb-2">Example Response</h4>
-            <pre className="rounded-lg bg-secondary p-4 text-xs font-mono overflow-x-auto">
+            <pre className="bg-secondary p-4 text-xs font-mono overflow-x-auto">
               {endpoint.exampleResponse}
             </pre>
           </div>
@@ -265,7 +265,7 @@ function EndpointCard({ endpoint }: { endpoint: Endpoint }) {
                 {copied ? "Copied" : "Copy"}
               </Button>
             </div>
-            <pre className="rounded-lg bg-secondary p-4 text-xs font-mono overflow-x-auto">
+            <pre className="bg-secondary p-4 text-xs font-mono overflow-x-auto">
               {endpoint.curlExample}
             </pre>
           </div>
@@ -284,7 +284,7 @@ function EndpointCard({ endpoint }: { endpoint: Endpoint }) {
                 {trying ? "Loading..." : "Try it"}
               </Button>
               {tryResult && (
-                <pre className="mt-3 rounded-lg bg-secondary p-4 text-xs font-mono overflow-x-auto max-h-64 overflow-y-auto">
+                <pre className="mt-3 bg-secondary p-4 text-xs font-mono overflow-x-auto max-h-64 overflow-y-auto">
                   {tryResult}
                 </pre>
               )}
@@ -312,7 +312,7 @@ export default function DocsPage() {
         <CardContent className="p-4">
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium">Base URL:</span>
-            <code className="rounded bg-secondary px-2 py-1 text-sm font-mono">
+            <code className="bg-secondary px-2 py-1 text-sm font-mono">
               https://openclaw-leaderboard.vercel.app
             </code>
           </div>
@@ -348,7 +348,7 @@ export default function DocsPage() {
           <p className="text-sm text-muted-foreground mb-3">
             All successful responses follow this structure:
           </p>
-          <pre className="rounded-lg bg-secondary p-4 text-xs font-mono">{`{
+          <pre className="bg-secondary p-4 text-xs font-mono">{`{
   "data": [...],          // Array or object
   "meta": {               // Only for paginated endpoints
     "page": 1,
@@ -359,7 +359,7 @@ export default function DocsPage() {
           <p className="text-sm text-muted-foreground mt-3">
             Error responses:
           </p>
-          <pre className="rounded-lg bg-secondary p-4 text-xs font-mono mt-2">{`{
+          <pre className="bg-secondary p-4 text-xs font-mono mt-2">{`{
   "error": "Human-readable error message",
   "details": [...]        // Optional validation details
 }`}</pre>

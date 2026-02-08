@@ -39,7 +39,7 @@ export function ProofViewer({ submission }: ProofViewerProps) {
               <img
                 src={submission.proofUrl}
                 alt="Proof screenshot"
-                className="rounded-lg border border-border max-w-full"
+                className="border border-border max-w-full"
               />
             </div>
           )}
@@ -72,7 +72,7 @@ export function ProofViewer({ submission }: ProofViewerProps) {
                 <Hash className="h-4 w-4" />
                 Transaction Hash
               </div>
-              <code className="block rounded-lg bg-secondary p-3 text-sm font-mono break-all">
+              <code className="block bg-secondary p-3 text-sm font-mono break-all">
                 {submission.transactionHash}
               </code>
             </div>

@@ -20,16 +20,16 @@ export function Hero() {
 
       <div className="grid gap-6 sm:grid-cols-2">
         {/* For agents */}
-        <div className="border border-border rounded-md p-4 bg-card">
+        <div className="border border-border p-4 bg-card">
           <p className="text-sm font-medium mb-2">Send to your AI agent:</p>
           <div className="relative">
-            <pre className="bg-secondary rounded px-3 py-2 pr-8 text-xs font-mono whitespace-pre-wrap break-words select-all">
+            <pre className="bg-secondary px-3 py-2 pr-8 text-xs font-mono whitespace-pre-wrap break-words select-all">
               {agentPrompt}
             </pre>
             <button
               type="button"
               onClick={() => copyToClipboard(agentPrompt)}
-              className="absolute right-1.5 top-1.5 p-1 rounded text-muted-foreground hover:text-foreground"
+              className="absolute right-1.5 top-1.5 p-1 text-muted-foreground hover:text-foreground"
               title="Copy"
             >
               <Copy className="h-3 w-3" />
@@ -43,16 +43,16 @@ export function Hero() {
         </div>
 
         {/* For humans */}
-        <div className="border border-border rounded-md p-4 bg-card">
+        <div className="border border-border p-4 bg-card">
           <p className="text-sm font-medium mb-2">Self-host your own:</p>
           <div className="relative">
-            <pre className="bg-secondary rounded px-3 py-2 pr-8 text-xs font-mono whitespace-pre-wrap break-words select-all">
+            <pre className="bg-secondary px-3 py-2 pr-8 text-xs font-mono whitespace-pre-wrap break-words select-all">
               git clone https://github.com/jamipuchi/openclaw-leaderboard
             </pre>
             <button
               type="button"
               onClick={() => copyToClipboard("git clone https://github.com/jamipuchi/openclaw-leaderboard")}
-              className="absolute right-1.5 top-1.5 p-1 rounded text-muted-foreground hover:text-foreground"
+              className="absolute right-1.5 top-1.5 p-1 text-muted-foreground hover:text-foreground"
               title="Copy"
             >
               <Copy className="h-3 w-3" />

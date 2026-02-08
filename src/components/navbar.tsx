@@ -16,7 +16,9 @@ export function Navbar() {
   return (
     <header className="border-b border-border bg-primary">
       <nav className="mx-auto flex h-10 max-w-5xl items-center gap-4 px-4">
-        <Link href="/" className="font-bold text-sm text-primary-foreground">
+        <Link href="/" className="flex items-center gap-1.5 font-bold text-sm text-primary-foreground">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.svg" alt="" className="h-5 w-5 invert" />
           OpenClaw
         </Link>
 

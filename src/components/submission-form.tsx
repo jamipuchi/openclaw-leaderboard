@@ -92,7 +92,7 @@ export function SubmissionForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {submitError && (
-        <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-sm text-destructive">
+        <div className="border border-destructive/50 bg-destructive/10 p-4 text-sm text-destructive">
           {submitError}
         </div>
       )}
@@ -185,7 +185,7 @@ export function SubmissionForm() {
         <div className="space-y-2">
           <Label>Upload Screenshot</Label>
           <div className="flex items-center gap-4">
-            <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-dashed border-border px-4 py-3 text-sm text-muted-foreground hover:border-primary/50 hover:text-foreground transition-colors">
+            <label className="flex cursor-pointer items-center gap-2 border border-dashed border-border px-4 py-3 text-sm text-muted-foreground hover:border-primary/50 hover:text-foreground transition-colors">
               {uploading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
@@ -270,7 +270,7 @@ export function SubmissionForm() {
         )}
       </div>
 
-      <details className="rounded-lg border border-border">
+      <details className="border border-border">
         <summary className="cursor-pointer px-4 py-3 text-sm font-medium select-none">
           Agent Configuration (optional)
         </summary>

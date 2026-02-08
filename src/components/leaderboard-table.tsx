@@ -114,7 +114,7 @@ export function LeaderboardTable({
       )}
 
       {/* Table */}
-      <div className="overflow-x-auto rounded border border-border">
+      <div className="border border-border">
         <table className="w-full">
           <thead>
             <tr className="border-b border-border bg-secondary/50">

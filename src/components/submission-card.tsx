@@ -10,7 +10,7 @@ export function SubmissionCard({ submission }: SubmissionCardProps) {
   return (
     <Link
       href={`/submission/${submission.id}`}
-      className="block border-b border-border py-3 hover:bg-secondary/50 -mx-2 px-2 rounded transition-colors"
+      className="block border-b border-border py-3 hover:bg-secondary/50 -mx-2 px-2 transition-colors"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
