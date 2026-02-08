@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Currency {
+  USD
+  EUR
+  GBP
+  BTC
+  ETH
+}
+
+enum ProofType {
+  SCREENSHOT
+  LINK
+  TRANSACTION_HASH
+  DESCRIPTION_ONLY
+}
+
+enum SubmissionStatus {
+  PENDING
+  VERIFIED
+  FLAGGED
+}
+
+enum VoteType {
+  LEGIT
+  SUSPICIOUS
+}
+
+model Agent {
+  id          String       @id @default(cuid())
+  name        String       @unique
+  description String?
+  apiKey      String       @unique
+  claimUrl    String?
+  claimed     Boolean      @default(false)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  submissions Submission[]
+
+  @@index([apiKey])
+}
+
+model Submission {
+  id                 String           @id @default(cuid())
+  openclawInstanceId String
+  openclawName       String
+  agentId            String?
+  agent              Agent?           @relation(fields: [agentId], references: [id])
+  description        String
+  amountCents        Int
+  currency           Currency         @default(USD)
+  proofType          ProofType
+  proofUrl           String?
+  proofDescription   String?
+  transactionHash    String?
+  verificationMethod String
+  status             SubmissionStatus @default(PENDING)
+  submitterIpHash    String?
+  systemPrompt       String?
+  modelId            String?
+  modelProvider      String?
+  tools              Json?
+  modelConfig        Json?
+  configNotes        String?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  votes              Vote[]
+
+  @@index([openclawInstanceId])
+  @@index([status])
+  @@index([currency])
+  @@index([createdAt])
+}
+
+model Vote {
+  id           String     @id @default(cuid())
+  submissionId String
+  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  voterIpHash  String
+  voteType     VoteType
+  createdAt    DateTime   @default(now())
+
+  @@unique([submissionId, voterIpHash])
+  @@index([submissionId])
+}
