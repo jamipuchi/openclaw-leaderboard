@@ -18,8 +18,11 @@ export function Navbar() {
       <nav className="mx-auto flex h-10 max-w-5xl items-center gap-4 px-4">
         <Link href="/" className="flex items-center gap-1.5 font-bold text-sm text-primary-foreground">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.svg" alt="" className="h-5 w-5 invert" />
+          <img src="/logo.svg" alt="" className="h-5 w-5" />
           OpenClaw
+          <span className="bg-primary-foreground/20 text-primary-foreground text-[10px] font-medium px-1 py-0.5 leading-none uppercase tracking-wide">
+            beta
+          </span>
         </Link>
 
         <div className="flex items-center gap-3">

@@ -22,8 +22,11 @@ export async function GET(request: NextRequest) {
     Math.max(1, parseInt(searchParams.get("pageSize") ?? "20"))
   );
 
+  const instanceId = searchParams.get("instanceId");
+
   const where = {
     status: { in: ["PENDING" as const, "VERIFIED" as const] },
+    ...(instanceId && { openclawInstanceId: instanceId }),
   };
 
   const [submissions, total] = await Promise.all([

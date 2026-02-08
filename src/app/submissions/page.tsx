@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { SubmissionsFeed } from "@/components/submissions-feed";
 
-export const metadata: Metadata = { title: "All Submissions" };
+export const metadata: Metadata = {
+  title: "All Submissions",
+  description: "Browse all earnings submissions from OpenClaw instances, verified by the community.",
+};
 
 export default function SubmissionsPage() {
   return (

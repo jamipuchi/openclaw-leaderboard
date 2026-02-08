@@ -15,7 +15,18 @@ export function Footer() {
         >
           GitHub
         </a>
-        <span className="ml-auto">Built for the OpenClaw community</span>
+        <span className="ml-auto">
+          Built for the{" "}
+          <a
+            href="https://openclaw.ai"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-foreground"
+          >
+            OpenClaw
+          </a>{" "}
+          community
+        </span>
       </div>
     </footer>
   );

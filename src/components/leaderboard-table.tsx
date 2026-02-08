@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { formatCurrency, formatRelativeTime } from "@/lib/utils";
+import { cn, formatCurrency, formatRelativeTime } from "@/lib/utils";
 import type { LeaderboardEntry, PaginatedResponse } from "@/types";
 
 interface LeaderboardTableProps {
@@ -57,14 +57,14 @@ export function LeaderboardTable({
   const totalPages = Math.ceil(meta.total / meta.pageSize);
 
   const getRankBadge = (rank: number) => {
-    return <span className="text-muted-foreground font-mono text-sm">{rank}.</span>;
+    return <span className={cn("text-muted-foreground font-mono", compact ? "text-xs" : "text-sm")}>{rank}.</span>;
   };
 
   if (loading) {
     return (
       <div className="space-y-3">
         {Array.from({ length: compact ? 5 : 10 }).map((_, i) => (
-          <Skeleton key={i} className="h-14 w-full" />
+          <Skeleton key={i} className={compact ? "h-8 w-full" : "h-14 w-full"} />
         ))}
       </div>
     );
@@ -115,17 +115,26 @@ export function LeaderboardTable({
 
       {/* Table */}
       <div className="border border-border">
-        <table className="w-full">
+        <table className="w-full table-fixed">
           <thead>
             <tr className="border-b border-border bg-secondary/50">
-              <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground w-16">
-                Rank
+              <th className={cn(
+                "text-left font-medium text-muted-foreground",
+                compact ? "px-2 py-2 text-xs w-8" : "px-4 py-3 text-sm w-16"
+              )}>
+                #
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+              <th className={cn(
+                "text-left font-medium text-muted-foreground",
+                compact ? "px-2 py-2 text-xs" : "px-4 py-3 text-sm"
+              )}>
                 Instance
               </th>
-              <th className="px-4 py-3 text-right text-sm font-medium text-muted-foreground">
-                Total Earned
+              <th className={cn(
+                "text-right font-medium text-muted-foreground",
+                compact ? "px-2 py-2 text-xs w-24" : "px-4 py-3 text-sm"
+              )}>
+                Earned
               </th>
               {!compact && (
                 <>
@@ -145,16 +154,35 @@ export function LeaderboardTable({
                 key={entry.openclawInstanceId}
                 className="table-row-hover border-b border-border last:border-0"
               >
-                <td className="px-4 py-3">{getRankBadge(entry.rank)}</td>
-                <td className="px-4 py-3">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">{entry.openclawName}</span>
-                    <Badge variant="secondary" className="text-xs">
-                      {entry.currency}
-                    </Badge>
+                <td className={cn(compact ? "px-2 py-1.5" : "px-4 py-3")}>
+                  {getRankBadge(entry.rank)}
+                </td>
+                <td className={cn(compact ? "px-2 py-1.5" : "px-4 py-3")}>
+                  <div className={cn("flex items-center", compact ? "gap-1" : "gap-2")}>
+                    <Link
+                      href={`/agent/${encodeURIComponent(entry.openclawInstanceId)}`}
+                      className={cn(
+                        "font-medium truncate hover:underline",
+                        compact ? "text-xs" : "text-sm"
+                      )}
+                    >
+                      {entry.openclawName}
+                    </Link>
+                    {compact ? (
+                      <span className="text-[10px] text-muted-foreground shrink-0">
+                        {entry.currency}
+                      </span>
+                    ) : (
+                      <Badge variant="secondary" className="text-xs">
+                        {entry.currency}
+                      </Badge>
+                    )}
                   </div>
                 </td>
-                <td className="px-4 py-3 text-right font-mono font-semibold text-success">
+                <td className={cn(
+                  "text-right font-mono font-semibold text-success",
+                  compact ? "px-2 py-1.5 text-xs" : "px-4 py-3 text-sm"
+                )}>
                   {formatCurrency(entry.totalEarningsCents, entry.currency)}
                 </td>
                 {!compact && (

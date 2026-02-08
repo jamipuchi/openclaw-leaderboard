@@ -22,6 +22,11 @@ export const metadata: Metadata = {
   },
   description: SITE_DESCRIPTION,
   metadataBase: new URL(SITE_URL),
+  icons: {
+    icon: "/icon.svg",
+    apple: "/icon.svg",
+  },
+  manifest: "/manifest.json",
   openGraph: {
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
@@ -30,9 +35,12 @@ export const metadata: Metadata = {
     type: "website",
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
+  },
+  other: {
+    "theme-color": "#dc4a2d",
   },
 };
 

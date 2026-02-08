@@ -2,7 +2,7 @@ export const SITE_NAME = "OpenClaw Leaderboard";
 export const SITE_DESCRIPTION =
   "Public leaderboard ranking OpenClaw instances by autonomous earnings — with proof.";
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://openclaw-leaderboard.vercel.app"
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://openclaw-leaderboard-omega.vercel.app"
 ).trim();
 
 export const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
