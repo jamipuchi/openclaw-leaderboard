@@ -47,6 +47,9 @@ export function formatRelativeTime(date: Date): string {
 
 export async function hashIp(ip: string): Promise<string> {
   const salt = process.env.IP_HASH_SALT ?? "openclaw-default-salt";
+  if (!process.env.IP_HASH_SALT) {
+    console.warn("[security] IP_HASH_SALT env var is not set — using default salt");
+  }
   const encoder = new TextEncoder();
   const data = encoder.encode(salt + ip);
   const hashBuffer = await crypto.subtle.digest("SHA-256", data);
