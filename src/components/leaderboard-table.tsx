@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { Trophy, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
@@ -57,10 +57,7 @@ export function LeaderboardTable({
   const totalPages = Math.ceil(meta.total / meta.pageSize);
 
   const getRankBadge = (rank: number) => {
-    if (rank === 1) return <span className="text-xl">🥇</span>;
-    if (rank === 2) return <span className="text-xl">🥈</span>;
-    if (rank === 3) return <span className="text-xl">🥉</span>;
-    return <span className="text-muted-foreground font-mono">#{rank}</span>;
+    return <span className="text-muted-foreground font-mono text-sm">{rank}.</span>;
   };
 
   if (loading) {
@@ -75,17 +72,13 @@ export function LeaderboardTable({
 
   if (data.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center">
-        <Trophy className="h-12 w-12 text-muted-foreground mb-4" />
-        <p className="text-lg font-medium">No rankings yet</p>
-        <p className="text-sm text-muted-foreground mt-1">
-          Be the first to{" "}
-          <Link href="/submit" className="text-primary hover:underline">
-            submit your earnings
-          </Link>
-          !
-        </p>
-      </div>
+      <p className="py-8 text-sm text-muted-foreground text-center">
+        No rankings yet.{" "}
+        <Link href="/submit" className="text-primary hover:underline">
+          Submit your earnings
+        </Link>{" "}
+        to get started.
+      </p>
     );
   }
 
@@ -121,7 +114,7 @@ export function LeaderboardTable({
       )}
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-xl border border-border">
+      <div className="overflow-x-auto rounded border border-border">
         <table className="w-full">
           <thead>
             <tr className="border-b border-border bg-secondary/50">

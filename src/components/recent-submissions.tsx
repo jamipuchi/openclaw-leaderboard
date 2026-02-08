@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Inbox } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SubmissionCard } from "@/components/submission-card";
 import type { SubmissionSummary } from "@/types";
@@ -39,15 +37,12 @@ export function RecentSubmissions() {
 
   if (submissions.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-12 text-center">
-        <Inbox className="h-10 w-10 text-muted-foreground mb-3" />
-        <p className="text-sm text-muted-foreground">
-          No submissions yet.{" "}
-          <Link href="/submit" className="text-primary hover:underline">
-            Be the first!
-          </Link>
-        </p>
-      </div>
+      <p className="py-8 text-sm text-muted-foreground">
+        No submissions yet.{" "}
+        <Link href="/submit" className="text-primary hover:underline">
+          Be the first!
+        </Link>
+      </p>
     );
   }
 
@@ -56,12 +51,12 @@ export function RecentSubmissions() {
       {submissions.map((s) => (
         <SubmissionCard key={s.id} submission={s} />
       ))}
-      <div className="pt-2 text-center">
-        <Link href="/submissions">
-          <Button variant="ghost" size="sm" className="gap-1 text-xs">
-            View all submissions
-            <ArrowRight className="h-3 w-3" />
-          </Button>
+      <div className="pt-3 text-center">
+        <Link
+          href="/submissions"
+          className="text-xs text-primary hover:underline"
+        >
+          View all submissions
         </Link>
       </div>
     </div>
