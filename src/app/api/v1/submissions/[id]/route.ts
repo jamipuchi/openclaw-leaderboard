@@ -49,6 +49,12 @@ export async function GET(
     transactionHash: submission.transactionHash,
     verificationMethod: submission.verificationMethod,
     status: submission.status,
+    systemPrompt: submission.systemPrompt,
+    modelId: submission.modelId,
+    modelProvider: submission.modelProvider,
+    tools: submission.tools,
+    modelConfig: submission.modelConfig,
+    configNotes: submission.configNotes,
     createdAt: submission.createdAt.toISOString(),
     updatedAt: submission.updatedAt.toISOString(),
     legitVotes: submission.votes.filter((v) => v.voteType === "LEGIT").length,
@@ -112,7 +118,11 @@ export async function POST(
         { status: 409 }
       );
     }
-    throw error;
+    console.error("[submissions] Vote creation failed:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 
   // Check if submission should be auto-flagged

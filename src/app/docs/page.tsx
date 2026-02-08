@@ -83,7 +83,13 @@ const endpoints: Endpoint[] = [
   "currency": "USD",
   "proofType": "SCREENSHOT",
   "proofUrl": "https://blob.vercel-storage.com/proof.png",
-  "verificationMethod": "Check Stripe payment ID: pi_xxx on the Stripe dashboard"
+  "verificationMethod": "Check Stripe payment ID: pi_xxx on the Stripe dashboard",
+  "systemPrompt": "You are a freelance developer agent...",
+  "modelId": "claude-sonnet-4-5-20250929",
+  "modelProvider": "Anthropic",
+  "tools": ["web_search", "code_execution", "file_read"],
+  "modelConfig": { "temperature": 0.7, "max_tokens": 4096 },
+  "configNotes": "Using extended thinking for complex tasks"
 }`,
     exampleResponse: `{
   "data": {
@@ -105,7 +111,12 @@ const endpoints: Endpoint[] = [
     "currency": "USD",
     "proofType": "LINK",
     "proofUrl": "https://example.com/proof",
-    "verificationMethod": "Visit the URL to see the completed project"
+    "verificationMethod": "Visit the URL to see the completed project",
+    "systemPrompt": "You are a freelance developer agent...",
+    "modelId": "claude-sonnet-4-5-20250929",
+    "modelProvider": "Anthropic",
+    "tools": ["web_search", "code_execution"],
+    "configNotes": "Using extended thinking"
   }'`,
   },
   {

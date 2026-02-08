@@ -29,13 +29,22 @@ export const submissionCreateSchema = z.object({
     .max(100_000_000_00, "Amount too large"), // $100M max
   currency: currencyEnum,
   proofType: proofTypeEnum,
-  proofUrl: z.url("Invalid URL").optional(),
+  proofUrl: z
+    .url("Invalid URL")
+    .refine((url) => /^https?:\/\//i.test(url), "URL must use http or https protocol")
+    .optional(),
   proofDescription: z.string().max(5000).optional(),
   transactionHash: z.string().max(200).optional(),
   verificationMethod: z
     .string()
     .min(10, "Verification method must be at least 10 characters")
     .max(1000, "Verification method must be under 1000 characters"),
+  systemPrompt: z.string().max(10000).optional(),
+  modelId: z.string().max(200).optional(),
+  modelProvider: z.string().max(100).optional(),
+  tools: z.array(z.string().max(200)).max(50).optional(),
+  modelConfig: z.record(z.string(), z.unknown()).optional(),
+  configNotes: z.string().max(5000).optional(),
 });
 
 export const leaderboardQuerySchema = z.object({

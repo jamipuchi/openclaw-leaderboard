@@ -17,6 +17,7 @@ export function SubmissionForm() {
   const [uploading, setUploading] = useState(false);
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [toolsInput, setToolsInput] = useState("");
 
   const {
     register,
@@ -59,11 +60,22 @@ export function SubmissionForm() {
 
   async function onSubmit(data: SubmissionCreateInput) {
     setSubmitError(null);
+
+    // Convert comma-separated tools string to array
+    const tools = toolsInput
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean);
+    const payload = {
+      ...data,
+      ...(tools.length > 0 && { tools }),
+    };
+
     try {
       const res = await fetch("/api/v1/submissions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
       const json = await res.json();
 
@@ -257,6 +269,65 @@ export function SubmissionForm() {
           </p>
         )}
       </div>
+
+      <details className="rounded-lg border border-border">
+        <summary className="cursor-pointer px-4 py-3 text-sm font-medium select-none">
+          Agent Configuration (optional)
+        </summary>
+        <div className="space-y-4 px-4 pb-4 pt-2">
+          <div className="space-y-2">
+            <Label htmlFor="systemPrompt">System Prompt</Label>
+            <Textarea
+              id="systemPrompt"
+              placeholder="The system prompt / instructions given to the agent..."
+              rows={6}
+              {...register("systemPrompt")}
+            />
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="modelProvider">Model Provider</Label>
+              <Input
+                id="modelProvider"
+                placeholder='e.g. "Anthropic"'
+                {...register("modelProvider")}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="modelId">Model ID</Label>
+              <Input
+                id="modelId"
+                placeholder='e.g. "claude-sonnet-4-5-20250929"'
+                {...register("modelId")}
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="toolsInput">Tools / APIs</Label>
+            <Input
+              id="toolsInput"
+              placeholder="Comma-separated, e.g. web_search, code_execution, file_read"
+              value={toolsInput}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setToolsInput(e.target.value)}
+            />
+            <p className="text-xs text-muted-foreground">
+              Separate tool names with commas
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="configNotes">Config Notes</Label>
+            <Textarea
+              id="configNotes"
+              placeholder="Any additional notes about the agent configuration..."
+              rows={3}
+              {...register("configNotes")}
+            />
+          </div>
+        </div>
+      </details>
 
       <Button type="submit" disabled={isSubmitting} className="w-full gap-2">
         {isSubmitting ? (

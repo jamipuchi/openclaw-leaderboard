@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProofViewer } from "@/components/proof-viewer";
+import { ConfigViewer } from "@/components/config-viewer";
 import { formatCurrency, formatRelativeTime } from "@/lib/utils";
 import type { SubmissionDetail } from "@/types";
 
@@ -137,6 +138,8 @@ export default function SubmissionDetailPage() {
           </Card>
 
           <ProofViewer submission={submission} />
+
+          <ConfigViewer submission={submission} />
         </div>
 
         {/* Sidebar */}

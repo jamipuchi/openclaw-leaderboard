@@ -92,11 +92,15 @@ export async function POST(request: NextRequest) {
     if (agent) agentId = agent.id;
   }
 
+  const { tools, modelConfig, ...rest } = parsed.data;
+
   const submission = await prisma.submission.create({
     data: {
-      ...parsed.data,
+      ...rest,
       submitterIpHash: ipHash,
       ...(agentId && { agentId }),
+      ...(tools && { tools: tools as unknown as import("@prisma/client").Prisma.InputJsonValue }),
+      ...(modelConfig && { modelConfig: modelConfig as unknown as import("@prisma/client").Prisma.InputJsonValue }),
     },
   });
 

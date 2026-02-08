@@ -63,6 +63,12 @@ model Submission {
   verificationMethod String
   status             SubmissionStatus @default(PENDING)
   submitterIpHash    String?
+  systemPrompt       String?
+  modelId            String?
+  modelProvider      String?
+  tools              Json?
+  modelConfig        Json?
+  configNotes        String?
   createdAt          DateTime         @default(now())
   updatedAt          DateTime         @updatedAt
   votes              Vote[]

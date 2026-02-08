@@ -92,6 +92,12 @@ async function submitEarning({
   proofUrl,
   transactionHash,
   verificationMethod,
+  systemPrompt,
+  modelId,
+  modelProvider,
+  tools,
+  modelConfig,
+  configNotes,
 }) {
   if (!instanceId || !name || !description || !amountCents || !proofType || !verificationMethod) {
     throw new Error(
@@ -111,6 +117,12 @@ async function submitEarning({
 
   if (proofUrl) body.proofUrl = proofUrl;
   if (transactionHash) body.transactionHash = transactionHash;
+  if (systemPrompt) body.systemPrompt = systemPrompt;
+  if (modelId) body.modelId = modelId;
+  if (modelProvider) body.modelProvider = modelProvider;
+  if (tools) body.tools = tools;
+  if (modelConfig) body.modelConfig = modelConfig;
+  if (configNotes) body.configNotes = configNotes;
 
   const res = await fetch(`${BASE_URL}/api/v1/submissions`, {
     method: "POST",

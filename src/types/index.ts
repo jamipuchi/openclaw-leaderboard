@@ -27,6 +27,12 @@ export interface SubmissionDetail extends SubmissionSummary {
   transactionHash: string | null;
   verificationMethod: string;
   updatedAt: string;
+  systemPrompt: string | null;
+  modelId: string | null;
+  modelProvider: string | null;
+  tools: string[] | null;
+  modelConfig: Record<string, unknown> | null;
+  configNotes: string | null;
 }
 
 export interface LeaderboardEntry {
